@@ -1,0 +1,40 @@
+group 'org.jsonschema2pojo.factory'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = propKotlinVersion
+    ext.jackson_version = '2.8.8'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    from {
+        configurations.compile
+                .filter( { !it.isDirectory() && it.name.contains("kotlin") } )
+                .collect {
+                    println("file: $it")
+                    it.isDirectory() ? it : zipTree(it)
+                }
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+
+    compile fileTree(dir: 'libs', include: '*.jar')
+
+    compile "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+}

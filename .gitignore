@@ -1,0 +1,9 @@
+
+.gitignore
+.gradle/
+.gradletasknamecache
+build.gradle
+gradle.properties
+libs/
+settings.gradle
+src/
